@@ -71,7 +71,7 @@ class TypeDefinitionTab(burp.ITab):
 
     def getTabCaption(self):
         """Returns name on tab"""
-        return "Protobuf Type Editor"
+        return "Protobuf"
 
     def getUiComponent(self):
         """Returns Java AWT component for tab"""

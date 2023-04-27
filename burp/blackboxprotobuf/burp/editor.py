@@ -28,7 +28,7 @@ import burp
 import copy
 import struct
 import blackboxprotobuf
-from javax.swing import JSplitPane, JPanel, JButton, BoxLayout, JOptionPane
+from javax.swing import JSplitPane, JPanel, JButton, BoxLayout, JOptionPane, JMenuItem, JPopupMenu
 from javax.swing import (
     Box,
     JTextField,
@@ -39,7 +39,7 @@ from javax.swing import (
 )
 from javax.swing.event import ListSelectionListener, ListDataEvent, ListDataListener
 from java.awt import Component, Dimension, FlowLayout
-from java.awt.event import ActionListener
+from java.awt.event import ActionListener, MouseAdapter
 from javax.swing.border import EmptyBorder
 from blackboxprotobuf.burp import user_funcs
 from blackboxprotobuf.burp import typedef_editor
@@ -97,10 +97,16 @@ class ProtoBufEditorTab(burp.IMessageEditorTab):
 
         self._new_type_field = JTextField()
 
+        self._type_pannel = self.createButtonPane()
+        self._type_pannel.setVisible(False)
+        
         self._component = JSplitPane(JSplitPane.HORIZONTAL_SPLIT)
         self._component.setLeftComponent(self._text_editor.getComponent())
-        self._component.setRightComponent(self.createButtonPane())
         self._component.setResizeWeight(0.95)
+
+        self._listener = LoadActionListener(self)
+        self._mouseListener = LoadMenuMouseListener(self)
+        self._text_editor.getComponent().addMouseListener(self._mouseListener)
 
         self.message_type = None
         self._is_request = None
@@ -574,6 +580,46 @@ class ProtoBufEditorTab(burp.IMessageEditorTab):
     def open_typedef_window(self):
         self._extension.open_typedef_editor(self.message_type, self.editType)
 
+
+class LoadActionListener(ActionListener):
+    def __init__(self, tab):
+        self.tab = tab
+
+
+class LoadMenuMouseListener(MouseAdapter):
+    def __init__(self, tab):
+        self.tab = tab
+
+    def mousePressed(self, event):
+        return self.handleMouseEvent(event)
+
+    def mouseReleased(self, event):
+        return self.handleMouseEvent(event)
+
+    def handleMouseEvent(self, event):
+        if event.isPopupTrigger():
+            loadMenu = JMenuItem("Toggle TypeEditor")
+            loadMenu.addActionListener(ToggleActionListener(self.tab, event.getComponent()))
+
+            popup = JPopupMenu()
+            popup.add(loadMenu)
+
+            popup.show(event.getComponent(), event.getX(), event.getY())
+
+
+class ToggleActionListener(ActionListener):
+    def __init__(self, tab, component):
+        self.tab = tab
+        self.component = component
+
+    def actionPerformed(self, event):
+        if (self.tab._type_pannel.isVisible()):
+            self.tab._type_pannel.setVisible(False)
+            self.tab._component.setRightComponent(self.tab._type_pannel)
+        else:
+            self.tab._type_pannel.setVisible(True)
+            self.tab._component.setRightComponent(self.tab._type_pannel)
+    
 
 class EditorButtonListener(ActionListener):
     """Callback listener for buttons in the message editor tab"""
