@@ -1,6 +1,6 @@
 """Functions for encoding and decoding fixed size integers and floats"""
 
-# Copyright (c) 2018-2022 NCC Group Plc
+# Copyright (c) 2018-2023 NCC Group Plc
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@ import struct
 import binascii
 import six
 from blackboxprotobuf.lib.exceptions import DecoderException, EncoderException
+
 
 # Generic functions for encoding/decoding structs based on the "struct" format
 def encode_struct(fmt, value):

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 NCC Group Plc
+# Copyright (c) 2018-2023 NCC Group Plc
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,6 @@ def test_proto_export(tmp_path, typedef, name):
     with tempfile.NamedTemporaryFile(
         mode="w", dir=str(tmp_path), suffix=".proto", delete=True
     ) as outfile:
-
         typedef_map = {name: typedef}
 
         note(typedef_map)
@@ -88,7 +87,6 @@ def test_proto_export_inverse(tmp_path, x, name):
     with tempfile.NamedTemporaryFile(
         mode="r+", dir=str(tmp_path), suffix=".proto", delete=True
     ) as outfile:
-
         typedef_map = {name: typedef}
 
         protofile.export_proto(typedef_map, output_file=outfile)

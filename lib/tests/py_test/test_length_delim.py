@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 NCC Group Plc
+# Copyright (c) 2018-2023 NCC Group Plc
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ if six.PY2:
     string_types = (unicode, str)
 else:
     string_types = str
+
 
 # Inverse checks. Ensure a value encoded by bbp decodes to the same value
 @given(x=strategies.input_map["bytes"])
@@ -200,14 +201,14 @@ def test_anon_decode(x):
 
 
 @given(x=strategies.gen_message())
-@example(x=({"1": {"seen_repeated": True, "type": "string"}}, {"1": [u"", u"0"]}))
+@example(x=({"1": {"seen_repeated": True, "type": "string"}}, {"1": ["", "0"]}))
 @example(
     x=(
         {
             "1": {"seen_repeated": False, "type": "sfixed32"},
             "2": {"seen_repeated": True, "type": "string"},
         },
-        {"1": 0, "2": [u"0", u"00"]},
+        {"1": 0, "2": ["0", "00"]},
     )
 )
 def test_message_guess_inverse(x):

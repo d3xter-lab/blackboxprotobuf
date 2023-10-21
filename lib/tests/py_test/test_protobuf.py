@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 NCC Group Plc
+# Copyright (c) 2018-2023 NCC Group Plc
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -68,6 +68,7 @@ testMessage_typedef = {
     # },
     # "65536": {"type": "packed_int", "name": "testRepeatedInt32"}
 }
+
 
 # Test decoding from blackboxprotobuf
 @given(x=strategies.gen_message_data(testMessage_typedef))
